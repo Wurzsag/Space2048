@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startGame(View button) {
-        //Intent i = new Intent(this, GameActivity.class);
-        //startActivity(i);
+        Intent i = new Intent(this, GameActivity.class);
+        startActivity(i);
     }
 
     public void showScore(View button) {
