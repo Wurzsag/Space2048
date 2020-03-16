@@ -8,13 +8,8 @@ public class GameCell {
     private ImageView img;
 
     public GameCell(int value, ImageView img) {
-        this.value = value;
         this.img = img;
-        initializeImageView();
-    }
-
-    public void initializeImageView() {
-        img.setImageResource(R.drawable.cell_empty);
+        setValue(value);
     }
 
     public int getValue() {
@@ -25,6 +20,15 @@ public class GameCell {
         this.value = value;
         if (value == 2) {
             img.setImageResource(R.drawable.cell_2);
+        }
+        else if (value == 4) {
+            img.setImageResource(R.drawable.cell_4);
+        }
+        else if (value == 8) {
+            img.setImageResource(R.drawable.cell_8);
+        }
+        else if (value == 16) {
+            img.setImageResource(R.drawable.cell_16);
         }
         else {
             img.setImageResource(R.drawable.cell_empty);
