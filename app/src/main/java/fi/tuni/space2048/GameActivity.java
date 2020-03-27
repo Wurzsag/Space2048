@@ -23,7 +23,7 @@ public class GameActivity extends AppCompatActivity {
     private static final int RIGHT = 2;
     private static final int LEFT = 3;
 
-    private static final int gridSize = 3;
+    private static final int gridSize = 4;
     private List<GameCell> gameCells = new ArrayList<>();
     int[] emptyCells;
     private TableLayout gameGrid;
@@ -82,7 +82,7 @@ public class GameActivity extends AppCompatActivity {
                 gameCells.get(gridSize*row+column).getImg().setLayoutParams(
                         new TableRow.LayoutParams(cellWidth, cellHeight));
 
-                gameCells.get(gridSize*row+column).getImg().setPadding(4,4,4,4);
+                gameCells.get(gridSize*row+column).getImg().setPadding(2,2,2,2);
 
                 tableRow.addView(gameCells.get(gridSize*row+column).getImg());
             }
