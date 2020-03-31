@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +13,7 @@ public class GameGrid {
     private Context context;
     private int gridSize;
     private int[] emptyCells;
+    private int[] lastEmptyCells;
     private List<GameCell> gameCells;
     private Random rnd = new Random();
 
@@ -25,10 +27,6 @@ public class GameGrid {
         for (int i = 0; i < gridSize * gridSize; i++) {
             gameCells.add(new GameCell(0, new ImageView(context)));
         }
-    }
-
-    public GameCell getGameCell(int i) {
-        return gameCells.get(i);
     }
 
     private int searchEmptyCells() {
@@ -46,9 +44,13 @@ public class GameGrid {
 
     public void placeNewNumber() {
         int numberOfEmptyCells = searchEmptyCells();
-        int rndPosition = emptyCells[rnd.nextInt(numberOfEmptyCells)];
 
-        gameCells.get(rndPosition).setValue(2);
+        if (! Arrays.equals(lastEmptyCells, emptyCells)) {
+            int rndPosition = emptyCells[rnd.nextInt(numberOfEmptyCells)];
+            gameCells.get(rndPosition).setValue(2);
+        }
+        numberOfEmptyCells = searchEmptyCells();
+        lastEmptyCells = emptyCells;
     }
 
     public void mergeCells(int[] cellValues) {
@@ -113,6 +115,10 @@ public class GameGrid {
                 gameCells.get(cellIndexes[i]).setValue(cellValues[i]);
             }
         }
+    }
+
+    public GameCell getGameCell(int i) {
+        return gameCells.get(i);
     }
 
 }

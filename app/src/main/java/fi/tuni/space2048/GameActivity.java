@@ -23,6 +23,7 @@ public class GameActivity extends AppCompatActivity {
     private TableLayout gameField;
     private ImageView gameCells[][];
     private GameGrid currentGrid;
+    private GameGrid lastGrid;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
