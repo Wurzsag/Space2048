@@ -20,6 +20,7 @@ public class GameActivity extends AppCompatActivity {
 
     private static final int gridSize = 4;
 
+    private TableLayout gameScreen;
     private TableLayout gameField;
     private ImageView gameCells[][];
     private GameGrid currentGrid;
@@ -30,11 +31,12 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        gameScreen = findViewById(R.id.gameScreen);
         gameField = findViewById(R.id.gameGrid);
         gameCells = new ImageView[gridSize][gridSize];
         currentGrid = new GameGrid(this, gridSize);
 
-        gameField.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
+        gameScreen.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
             public void onSwipeTop() {
                 currentGrid.moveCells(UP);
                 currentGrid.placeNewNumber();
@@ -91,7 +93,7 @@ public class GameActivity extends AppCompatActivity {
 
             for (int column = 0; column < gameCells.length; column++) {
                 gameCells[row][column] = new ImageView(this);
-                gameCells[row][column].setImageResource(R.drawable.cell_empty);
+                gameCells[row][column].setImageResource(R.drawable.cell_0);
 
                 Display display = getWindowManager().getDefaultDisplay();
                 DisplayMetrics displaymetrics = new DisplayMetrics();

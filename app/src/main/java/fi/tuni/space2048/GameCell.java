@@ -30,8 +30,11 @@ public class GameCell {
         else if (value == 16) {
             img.setImageResource(R.drawable.cell_16);
         }
+        else if (value == 32) {
+            img.setImageResource(R.drawable.cell_32);
+        }
         else {
-            img.setImageResource(R.drawable.cell_empty);
+            img.setImageResource(R.drawable.cell_0);
         }
     }
 

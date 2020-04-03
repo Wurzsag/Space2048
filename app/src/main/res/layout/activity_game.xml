@@ -2,13 +2,32 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gameGrid"
+    android:id="@+id/gameScreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:shrinkColumns="*"
+    android:padding="6dp"
     android:gravity="center"
-    android:padding="8dp"
     android:background="@drawable/game_background"
     tools:context=".GameActivity">
+
+    <TableRow android:gravity="center"
+        android:layout_marginBottom="20dp">
+        <TextView
+            android:id="@+id/highscore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Highscore: 0"
+            android:textColor="#FFFFFF" />
+    </TableRow>
+
+    <TableRow android:gravity="center"
+        android:layout_marginBottom="60dp">
+        <TableLayout
+            android:id="@+id/gameGrid"
+            android:shrinkColumns="*"
+            android:gravity="center">
+        </TableLayout>
+    </TableRow>
 
 </TableLayout>
