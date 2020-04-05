@@ -15,6 +15,7 @@ public class GameGrid {
     private int[] emptyCells;
     private int[] lastEmptyCells;
     private List<GameCell> gameCells;
+    private int score;
     private Random rnd = new Random();
 
     public GameGrid(Context context, int gridSize) {
@@ -70,6 +71,7 @@ public class GameGrid {
                 mergedCells[mergedCellsIndex] = 2 * cellValues[i];
                 mergedCellsIndex++;
                 i++;
+                score += 2 * cellValues[i];
             }
             else {
                 mergedCells[mergedCellsIndex] = cellValues[i];
@@ -114,11 +116,15 @@ public class GameGrid {
             for (int i = 0; i < gridSize; i++) {
                 gameCells.get(cellIndexes[i]).setValue(cellValues[i]);
             }
+
+
         }
     }
 
     public GameCell getGameCell(int i) {
         return gameCells.get(i);
     }
-
+    public String getScoreString() {
+        return String.valueOf(score);
+    }
 }

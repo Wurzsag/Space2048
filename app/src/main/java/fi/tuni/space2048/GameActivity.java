@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -25,6 +26,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageView gameCells[][];
     private GameGrid currentGrid;
     private GameGrid lastGrid;
+    private TextView scoreTV;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -35,23 +37,28 @@ public class GameActivity extends AppCompatActivity {
         gameField = findViewById(R.id.gameGrid);
         gameCells = new ImageView[gridSize][gridSize];
         currentGrid = new GameGrid(this, gridSize);
+        scoreTV = findViewById(R.id.score);
 
         gameScreen.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
             public void onSwipeTop() {
                 currentGrid.moveCells(UP);
                 currentGrid.placeNewNumber();
+                scoreTV.setText(currentGrid.getScoreString());
             }
             public void onSwipeRight() {
                 currentGrid.moveCells(RIGHT);
                 currentGrid.placeNewNumber();
+                scoreTV.setText(currentGrid.getScoreString());
             }
             public void onSwipeLeft() {
                 currentGrid.moveCells(LEFT);
                 currentGrid.placeNewNumber();
+                scoreTV.setText(currentGrid.getScoreString());
             }
             public void onSwipeBottom() {
                 currentGrid.moveCells(DOWN);
                 currentGrid.placeNewNumber();
+                scoreTV.setText(currentGrid.getScoreString());
             }
         });
 

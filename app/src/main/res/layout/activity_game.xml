@@ -13,11 +13,17 @@
     <TableRow android:gravity="center"
         android:layout_marginBottom="20dp">
         <TextView
-            android:id="@+id/highscore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Highscore: 0"
+            android:gravity="center_horizontal"
+            android:text="@string/score"
+            android:textColor="#FFFFFF" />
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="0"
             android:textColor="#FFFFFF" />
     </TableRow>
 
