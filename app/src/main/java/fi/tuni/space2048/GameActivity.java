@@ -3,6 +3,8 @@ package fi.tuni.space2048;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -12,7 +14,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.Arrays;
+
 public class GameActivity extends AppCompatActivity {
+
+    public static final String PREFS_KEY = "MyPrefs";
 
     public static final int UP = 0;
     public static final int DOWN = 1;
@@ -59,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
                 currentGrid.moveCells(DOWN);
                 currentGrid.placeNewNumber();
                 scoreTV.setText(currentGrid.getScoreString());
+                saveScore();
             }
         });
 
@@ -93,28 +100,15 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void initializeGrid3() {
-        for (int row = 0; row < gameCells.length; row++) {
-            TableRow tableRow = new TableRow(this);
-            tableRow.setGravity(Gravity.CENTER);
+    private void saveScore() {
+        SharedPreferences sharedPref = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
 
-            for (int column = 0; column < gameCells.length; column++) {
-                gameCells[row][column] = new ImageView(this);
-                gameCells[row][column].setImageResource(R.drawable.cell_0);
+        int[] topScores = {150, 145, 12};
 
-                Display display = getWindowManager().getDefaultDisplay();
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                display.getMetrics(displaymetrics);
-                int cellWidth = displaymetrics.widthPixels / 5;
-                int cellHeight = displaymetrics.heightPixels / 9;
-                gameCells[row][column].setLayoutParams(
-                        new TableRow.LayoutParams(cellWidth, cellHeight));
+        String topScoresString = Arrays.toString(topScores);
 
-                gameCells[row][column].setPadding(4,4,4,4);
-
-                tableRow.addView(gameCells[row][column]);
-            }
-            gameField.addView(tableRow);
-        }
+        editor.putString("highscores", topScoresString);
+        editor.apply();
     }
 }

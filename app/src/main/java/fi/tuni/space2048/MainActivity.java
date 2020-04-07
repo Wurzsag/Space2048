@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showScore(View button) {
-        //Intent i = new Intent(this, HighScoreActivity.class);
-        //startActivity(i);
+        Intent i = new Intent(this, HighscoresActivity.class);
+        startActivity(i);
     }
 }
