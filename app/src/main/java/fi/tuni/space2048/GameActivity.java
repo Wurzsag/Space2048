@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -14,6 +15,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity {
@@ -33,6 +35,7 @@ public class GameActivity extends AppCompatActivity {
     private GameGrid currentGrid;
     private GameGrid lastGrid;
     private TextView scoreTV;
+    private MediaPlayer mediaPlayer;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -44,6 +47,10 @@ public class GameActivity extends AppCompatActivity {
         gameCells = new ImageView[gridSize][gridSize];
         currentGrid = new GameGrid(this, gridSize);
         scoreTV = findViewById(R.id.score);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.music);
+        mediaPlayer.start();
+        mediaPlayer.setLooping(true);
 
         gameScreen.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
             public void onSwipeTop() {
@@ -72,6 +79,21 @@ public class GameActivity extends AppCompatActivity {
         initializeGrid();
         currentGrid.placeNewNumber();
         currentGrid.placeNewNumber();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void initializeGrid() {
