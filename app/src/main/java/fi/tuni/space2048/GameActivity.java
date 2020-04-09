@@ -1,20 +1,27 @@
 package fi.tuni.space2048;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
+import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -25,13 +32,14 @@ public class GameActivity extends AppCompatActivity {
 
     private static final int gridSize = 4;
 
-    private TableLayout gameScreen;
+    private ConstraintLayout gameScreen;
     private TableLayout gameField;
     private GameGrid currentGrid;
     private GameGrid lastGrid;
     private TextView scoreTV;
     private boolean muted;
     private MediaPlayer mediaPlayer;
+    private DecimalFormat formatter;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -48,30 +56,28 @@ public class GameActivity extends AppCompatActivity {
         gameScreen.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
             public void onSwipeTop() {
                 currentGrid.moveCells(UP);
-                currentGrid.placeNewNumber();
-                scoreTV.setText(currentGrid.getScoreString());
             }
             public void onSwipeRight() {
                 currentGrid.moveCells(RIGHT);
-                currentGrid.placeNewNumber();
-                scoreTV.setText(currentGrid.getScoreString());
             }
             public void onSwipeLeft() {
                 currentGrid.moveCells(LEFT);
-                currentGrid.placeNewNumber();
-                scoreTV.setText(currentGrid.getScoreString());
             }
             public void onSwipeBottom() {
                 currentGrid.moveCells(DOWN);
-                currentGrid.placeNewNumber();
-                scoreTV.setText(currentGrid.getScoreString());
+            }
+            public void onSwipe() {
                 saveScore();
+
+                scoreTV.setText(formatter.format(currentGrid.getScore()));
             }
         });
 
         initializeGrid();
+        initializeFormatter();
         currentGrid.placeNewNumber();
         currentGrid.placeNewNumber();
+        scoreTV.setText(formatter.format(currentGrid.getScore()));
     }
 
     @Override
@@ -118,6 +124,13 @@ public class GameActivity extends AppCompatActivity {
             }
             gameField.addView(tableRow);
         }
+    }
+
+    private void initializeFormatter() {
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setGroupingSeparator(' ');
+        formatter = new DecimalFormat("###,###,###", dfs);
+        formatter.setMinimumIntegerDigits(9);
     }
 
     private void saveScore() {

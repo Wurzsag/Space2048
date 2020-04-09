@@ -116,9 +116,8 @@ public class GameGrid {
             for (int i = 0; i < gridSize; i++) {
                 gameCells.get(cellIndexes[i]).setValue(cellValues[i]);
             }
-
-
         }
+        placeNewNumber();
     }
 
     public GameCell getGameCell(int i) {
@@ -126,5 +125,8 @@ public class GameGrid {
     }
     public String getScoreString() {
         return String.valueOf(score);
+    }
+    public int getScore() {
+        return score;
     }
 }

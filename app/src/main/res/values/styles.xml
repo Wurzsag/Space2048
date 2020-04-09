@@ -9,4 +9,17 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="scoreText">
+        <item name="android:gravity">center</item>
+        <item name="android:singleLine">true</item>
+        <item name="fontFamily">@font/share_tech_mono</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:shadowColor">#FF0015</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">10</item>
+        <item name="android:background">@drawable/ui_points</item>
+    </style>
+
 </resources>
