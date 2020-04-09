@@ -19,7 +19,7 @@ public class HighscoresActivity extends AppCompatActivity {
     }
 
     private void readScores() {
-        SharedPreferences sharedPref = getSharedPreferences(GameActivity.PREFS_KEY, MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
         String highscoresString = sharedPref.getString("highscores", "tyhja");
 
         highscoresString = highscoresString.replace("[", "").

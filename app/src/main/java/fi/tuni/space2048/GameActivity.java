@@ -3,7 +3,6 @@ package fi.tuni.space2048;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -15,12 +14,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity {
-
-    public static final String PREFS_KEY = "MyPrefs";
 
     public static final int UP = 0;
     public static final int DOWN = 1;
@@ -31,10 +27,10 @@ public class GameActivity extends AppCompatActivity {
 
     private TableLayout gameScreen;
     private TableLayout gameField;
-    private ImageView gameCells[][];
     private GameGrid currentGrid;
     private GameGrid lastGrid;
     private TextView scoreTV;
+    private boolean muted;
     private MediaPlayer mediaPlayer;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -44,13 +40,10 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         gameScreen = findViewById(R.id.gameScreen);
         gameField = findViewById(R.id.gameGrid);
-        gameCells = new ImageView[gridSize][gridSize];
-        currentGrid = new GameGrid(this, gridSize);
         scoreTV = findViewById(R.id.score);
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.music);
-        mediaPlayer.start();
-        mediaPlayer.setLooping(true);
+        currentGrid = new GameGrid(this, gridSize);
+        Bundle extras = getIntent().getExtras();
+        muted = extras.getBoolean("muted");
 
         gameScreen.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
             public void onSwipeTop() {
@@ -84,16 +77,21 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (!muted) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.music);
+            mediaPlayer.start();
+            mediaPlayer.setLooping(true);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
     private void initializeGrid() {
@@ -123,7 +121,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void saveScore() {
-        SharedPreferences sharedPref = getSharedPreferences(PREFS_KEY, MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
 
         int[] topScores = {150, 145, 12};
