@@ -12,6 +12,7 @@ public class GameGrid {
 
     private Context context;
     private int gridSize;
+    private int noOfEmptyCells;
     private int[] emptyCells;
     private int[] lastEmptyCells;
     private List<GameCell> gameCells;
@@ -30,27 +31,28 @@ public class GameGrid {
         }
     }
 
-    private int searchEmptyCells() {
+    private void searchEmptyCells() {
         emptyCells = new int[gridSize * gridSize];
-        int numberOfEmptyCells = 0;
+        noOfEmptyCells = 0;
 
         for (int i = 0; i < gameCells.size(); i++) {
             if (gameCells.get(i).getValue() == 0) {
-                emptyCells[numberOfEmptyCells] = i;
-                numberOfEmptyCells++;
+                emptyCells[noOfEmptyCells] = i;
+                noOfEmptyCells++;
             }
         }
-        return numberOfEmptyCells;
     }
 
     public void placeNewNumber() {
-        int numberOfEmptyCells = searchEmptyCells();
+        searchEmptyCells();
 
-        if (! Arrays.equals(lastEmptyCells, emptyCells)) {
-            int rndPosition = emptyCells[rnd.nextInt(numberOfEmptyCells)];
+        if (! Arrays.equals(lastEmptyCells, emptyCells) ||
+                noOfEmptyCells == gridSize * gridSize - 1) {
+            int rndPosition = emptyCells[rnd.nextInt(noOfEmptyCells)];
             gameCells.get(rndPosition).setValue(2);
         }
-        numberOfEmptyCells = searchEmptyCells();
+
+        searchEmptyCells();
         lastEmptyCells = emptyCells;
     }
 
