@@ -1,6 +1,7 @@
 package fi.tuni.space2048;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -31,6 +32,26 @@ public class GameGrid {
         }
     }
 
+    private boolean checkMovesLeft() {
+        boolean pairFound = false;
+        int horizIdx;
+        int vertIdx;
+        for (int row = 0; row < gridSize && !pairFound; row++) {
+            for (int col = 0; col < gridSize-1 && !pairFound; col++) {
+                horizIdx = row * gridSize + col;
+                vertIdx = col * gridSize + row;
+                if (gameCells.get(horizIdx).getValue() == gameCells.get(horizIdx + 1).getValue()) {
+                    pairFound = true;
+                }
+                if (gameCells.get(vertIdx).getValue() ==
+                        gameCells.get(vertIdx + gridSize).getValue()) {
+                    pairFound = true;
+                }
+            }
+        }
+        return pairFound;
+    }
+
     private void searchEmptyCells() {
         emptyCells = new int[gridSize * gridSize];
         noOfEmptyCells = 0;
@@ -53,6 +74,11 @@ public class GameGrid {
         }
 
         searchEmptyCells();
+        if (noOfEmptyCells == 0) {
+            if (!checkMovesLeft()) {
+                Log.d("e1", "GAME OVER");
+            }
+        }
         lastEmptyCells = emptyCells;
     }
 
