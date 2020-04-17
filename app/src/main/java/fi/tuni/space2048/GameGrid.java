@@ -12,6 +12,7 @@ import java.util.Random;
 public class GameGrid {
 
     private Context context;
+    private boolean gameOver;
     private int gridSize;
     private int noOfEmptyCells;
     private int[] emptyCells;
@@ -56,8 +57,8 @@ public class GameGrid {
         emptyCells = new int[gridSize * gridSize];
         noOfEmptyCells = 0;
 
-        for (int i = 0; i < gameCells.size(); i++) {
-            if (gameCells.get(i).getValue() == 0) {
+        for (int i = 1; i <= gameCells.size(); i++) {
+            if (gameCells.get(i - 1).getValue() == 0) {
                 emptyCells[noOfEmptyCells] = i;
                 noOfEmptyCells++;
             }
@@ -70,13 +71,13 @@ public class GameGrid {
         if (! Arrays.equals(lastEmptyCells, emptyCells) ||
                 noOfEmptyCells == gridSize * gridSize - 1) {
             int rndPosition = emptyCells[rnd.nextInt(noOfEmptyCells)];
-            gameCells.get(rndPosition).setValue(2);
+            gameCells.get(rndPosition - 1).setValue(2);
         }
 
         searchEmptyCells();
         if (noOfEmptyCells == 0) {
             if (!checkMovesLeft()) {
-                Log.d("e1", "GAME OVER");
+                gameOver = true;
             }
         }
         lastEmptyCells = emptyCells;
@@ -156,5 +157,11 @@ public class GameGrid {
     }
     public int getScore() {
         return score;
+    }
+    public boolean isGameOver() {
+        return gameOver;
+    }
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }

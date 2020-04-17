@@ -37,6 +37,7 @@ public class GameActivity extends AppCompatActivity {
     private GameGrid currentGrid;
     private GameGrid lastGrid;
     private TextView scoreTV;
+    private TextView gameOverTV;
     private boolean muted;
     private MediaPlayer mediaPlayer;
     private DecimalFormat formatter;
@@ -49,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
         gameScreen = findViewById(R.id.gameScreen);
         gameField = findViewById(R.id.gameGrid);
         scoreTV = findViewById(R.id.score);
+        gameOverTV = findViewById(R.id.gameOver);
         currentGrid = new GameGrid(this, gridSize);
         Bundle extras = getIntent().getExtras();
         muted = extras.getBoolean("muted");
@@ -70,6 +72,9 @@ public class GameActivity extends AppCompatActivity {
                 saveScore();
 
                 scoreTV.setText(formatter.format(currentGrid.getScore()));
+                if (currentGrid.isGameOver()) {
+                    gameOverTV.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -77,6 +82,7 @@ public class GameActivity extends AppCompatActivity {
         initializeFormatter();
         currentGrid.placeNewNumber();
         currentGrid.placeNewNumber();
+        gameOverTV.setVisibility(View.GONE);
         scoreTV.setText(formatter.format(currentGrid.getScore()));
     }
 
