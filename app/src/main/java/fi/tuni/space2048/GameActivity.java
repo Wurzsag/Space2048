@@ -20,7 +20,9 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
@@ -69,11 +71,12 @@ public class GameActivity extends AppCompatActivity {
                 currentGrid.moveCells(DOWN);
             }
             public void onSwipe() {
-                saveScore();
-
                 scoreTV.setText(formatter.format(currentGrid.getScore()));
+
                 if (currentGrid.isGameOver()) {
                     gameOverTV.setVisibility(View.VISIBLE);
+                    saveScore();
+                    endGame();
                 }
             }
         });
@@ -139,15 +142,41 @@ public class GameActivity extends AppCompatActivity {
         formatter.setMinimumIntegerDigits(9);
     }
 
+    private String sortScores(String highscoresString) {
+
+        highscoresString = highscoresString.replace("[", "")
+                .replace("]", "");
+        String[] highscoresStringArray = highscoresString.split(", ");
+
+        int[] topScores = new int[3];
+        int tempScore = currentGrid.getScore();
+        for (int i = 0; i < highscoresStringArray.length; i++) {
+            int topScore = Integer.parseInt(highscoresStringArray[i]);
+
+            if (topScore <= tempScore) {
+                topScores[i] = tempScore;
+                tempScore = topScore;
+            }
+            else {
+                topScores[i] = topScore;
+            }
+        }
+        return Arrays.toString(topScores);
+    }
+
     private void saveScore() {
         SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
+        String highscoresString = sharedPref.getString("highscores", "0, 0, 0");
+
+        highscoresString = sortScores(highscoresString);
+
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        int[] topScores = {150, 145, 12};
-
-        String topScoresString = Arrays.toString(topScores);
-
-        editor.putString("highscores", topScoresString);
+        editor.putString("highscores", highscoresString);
         editor.apply();
+    }
+
+    private void endGame() {
+        gameScreen.setOnTouchListener(null);
     }
 }
