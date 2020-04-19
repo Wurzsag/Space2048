@@ -5,4 +5,7 @@
     <string name="highscores">Highscores</string>
     <string name="score">Score</string>
     <string name="game_over">Game over</string>
+    <string name="grid_3x3">3x3</string>
+    <string name="grid_4x4">4x4</string>
+    <string name="grid_5x5">5x5</string>
 </resources>

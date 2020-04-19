@@ -32,8 +32,7 @@ public class GameActivity extends AppCompatActivity {
     public static final int RIGHT = 2;
     public static final int LEFT = 3;
 
-    private static final int gridSize = 4;
-
+    private static int gridSize;
     private ConstraintLayout gameScreen;
     private TableLayout gameField;
     private GameGrid currentGrid;
@@ -49,13 +48,16 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            gridSize = extras.getInt("gridSize");
+            muted = extras.getBoolean("muted");
+        }
         gameScreen = findViewById(R.id.gameScreen);
         gameField = findViewById(R.id.gameGrid);
         scoreTV = findViewById(R.id.score);
         gameOverTV = findViewById(R.id.gameOver);
         currentGrid = new GameGrid(this, gridSize);
-        Bundle extras = getIntent().getExtras();
-        muted = extras.getBoolean("muted");
 
         gameScreen.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
             public void onSwipeTop() {
@@ -93,7 +95,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (!muted) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.music);
+            mediaPlayer = MediaPlayer.create(this, R.raw.space_music);
             mediaPlayer.start();
             mediaPlayer.setLooping(true);
         }
