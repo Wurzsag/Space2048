@@ -125,8 +125,10 @@ public class GameActivity extends AppCompatActivity {
                 Display display = getWindowManager().getDefaultDisplay();
                 DisplayMetrics displaymetrics = new DisplayMetrics();
                 display.getMetrics(displaymetrics);
-                int cellWidth = displaymetrics.widthPixels / 5;
-                int cellHeight = displaymetrics.heightPixels / 9;
+                double aspectRatio = (double) displaymetrics.heightPixels
+                        / displaymetrics.widthPixels;
+                int cellWidth = displaymetrics.widthPixels / (gridSize+1);
+                int cellHeight = (int) (displaymetrics.heightPixels / ((gridSize+1) * aspectRatio));
                 imageView.setLayoutParams(new TableRow.LayoutParams(cellWidth, cellHeight));
 
                 imageView.setPadding(2,2,2,2);
