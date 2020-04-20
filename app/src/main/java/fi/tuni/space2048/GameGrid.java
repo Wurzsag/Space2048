@@ -18,7 +18,9 @@ public class GameGrid {
     private int[] emptyCells;
     private int[] lastEmptyCells;
     private List<GameCell> gameCells;
+    private List<Integer> lastGrid = new ArrayList<>();
     private int score;
+    private int lastScore;
     private Random rnd = new Random();
 
     public GameGrid(Context context, int gridSize) {
@@ -31,6 +33,14 @@ public class GameGrid {
         for (int i = 0; i < gridSize * gridSize; i++) {
             gameCells.add(new GameCell(0, new ImageView(context)));
         }
+    }
+    
+    private void saveGridValues() {
+        lastGrid.clear();
+        for (GameCell cell : gameCells) {
+            lastGrid.add(cell.getValue());
+        }
+        lastScore = score;
     }
 
     private boolean checkMovesLeft() {
@@ -115,6 +125,8 @@ public class GameGrid {
         int[] cellValues;
         int cellValuesIndex;
 
+        saveGridValues();
+
         for (int row = 0; row < gridSize; row++) {
             cellValues = new int[gridSize];
             cellIndexes = new int[gridSize];
@@ -149,6 +161,13 @@ public class GameGrid {
         placeNewNumber();
     }
 
+    public void undo() {
+        for (int i = 0; i < gameCells.size(); i++) {
+            gameCells.get(i).setValue(lastGrid.get(i));
+        }
+        score = (int) (lastScore * 0.9);
+    }
+
     public GameCell getGameCell(int i) {
         return gameCells.get(i);
     }
@@ -157,6 +176,9 @@ public class GameGrid {
     }
     public int getScore() {
         return score;
+    }
+    public void setScore(int score) {
+        this.score = score;
     }
     public boolean isGameOver() {
         return gameOver;

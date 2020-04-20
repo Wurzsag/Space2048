@@ -51,9 +51,11 @@ public class MainActivity extends AppCompatActivity {
     public void changeGridSize(View button) {
         gridSize++;
         if (gridSize > 5) {
-            gridSize = 3;
+            gridSize = 2;
         }
         switch (gridSize) {
+            case 2: gridSizeBtn.setText(R.string.grid_2x2);
+                break;
             case 3: gridSizeBtn.setText(R.string.grid_3x3);
                 break;
             case 4: gridSizeBtn.setText(R.string.grid_4x4);
