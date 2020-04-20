@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -76,6 +78,7 @@ public class GameActivity extends AppCompatActivity {
 
                 if (gameGrid.isGameOver()) {
                     gameOverTV.setVisibility(View.VISIBLE);
+                    undoBtn.setEnabled(false);
                     saveScore();
                     endGame();
                 }
@@ -111,6 +114,10 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    public void resetGame(View button) {
+        recreate();
+    }
+
     private void initializeGrid() {
         gameGrid.initializeGrid();
         ImageView imageView;
@@ -132,7 +139,6 @@ public class GameActivity extends AppCompatActivity {
                 imageView.setLayoutParams(new TableRow.LayoutParams(cellWidth, cellHeight));
 
                 imageView.setPadding(2,2,2,2);
-
                 tableRow.addView(imageView);
             }
             gameField.addView(tableRow);

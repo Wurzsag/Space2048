@@ -24,13 +24,24 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
+        android:id="@+id/resetBtn"
+        android:onClick="resetGame"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:src="@android:drawable/stat_notify_sync"
+        app:layout_constraintBottom_toBottomOf="@+id/score"
+        app:layout_constraintStart_toEndOf="@+id/score"
+        app:layout_constraintTop_toTopOf="@+id/score"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <ImageButton
         android:id="@+id/undoBtn"
         android:onClick="undoMove"
         android:layout_width="46dp"
         android:layout_height="46dp"
         android:src="@android:drawable/ic_menu_revert"
         app:layout_constraintBottom_toBottomOf="@+id/score"
-        app:layout_constraintStart_toEndOf="@+id/score"
+        app:layout_constraintStart_toEndOf="@+id/resetBtn"
         app:layout_constraintTop_toTopOf="@+id/score"
         app:layout_constraintVertical_bias="0.6" />
 
