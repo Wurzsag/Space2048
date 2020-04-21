@@ -34,6 +34,7 @@ public class GameActivity extends AppCompatActivity {
     private int gridSize;
     private ConstraintLayout gameScreen;
     private TableLayout gameField;
+    private TableLayout animationGrid;
     private GameGrid gameGrid;
     private ImageButton undoBtn;
     private TextView scoreTV;
@@ -54,6 +55,7 @@ public class GameActivity extends AppCompatActivity {
         }
         gameScreen = findViewById(R.id.gameScreen);
         gameField = findViewById(R.id.gameGrid);
+        animationGrid = findViewById(R.id.animationGrid);
         undoBtn = findViewById(R.id.undoBtn);
         scoreTV = findViewById(R.id.score);
         gameOverTV = findViewById(R.id.gameOver);
@@ -120,14 +122,18 @@ public class GameActivity extends AppCompatActivity {
 
     private void initializeGrid() {
         gameGrid.initializeGrid();
-        ImageView imageView;
+        ImageView cellImageView;
+        ImageView animImageView;
 
         for (int row = 0; row < gridSize; row++) {
             TableRow tableRow = new TableRow(this);
+            TableRow animTableRow = new TableRow(this);
             tableRow.setGravity(Gravity.CENTER);
+            animTableRow.setGravity(Gravity.CENTER);
 
             for (int column = 0; column < gridSize; column++) {
-                imageView = gameGrid.getGameCell(gridSize*row+column).getImg();
+                cellImageView = gameGrid.getGameCell(gridSize*row+column).getImg();
+                animImageView = gameGrid.getGameCell(gridSize*row+column).getAnimImg();
 
                 Display display = getWindowManager().getDefaultDisplay();
                 DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -136,12 +142,16 @@ public class GameActivity extends AppCompatActivity {
                         / displaymetrics.widthPixels;
                 int cellWidth = displaymetrics.widthPixels / (gridSize+1);
                 int cellHeight = (int) (displaymetrics.heightPixels / ((gridSize+1) * aspectRatio));
-                imageView.setLayoutParams(new TableRow.LayoutParams(cellWidth, cellHeight));
+                cellImageView.setLayoutParams(new TableRow.LayoutParams(cellWidth, cellHeight));
+                animImageView.setLayoutParams(new TableRow.LayoutParams(cellWidth, cellHeight));
 
-                imageView.setPadding(2,2,2,2);
-                tableRow.addView(imageView);
+                cellImageView.setPadding(2,2,2,2);
+                animImageView.setPadding(2,2,2,2);
+                tableRow.addView(cellImageView);
+                animTableRow.addView(animImageView);
             }
             gameField.addView(tableRow);
+            animationGrid.addView(animTableRow);
         }
     }
 

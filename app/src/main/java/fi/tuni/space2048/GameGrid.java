@@ -1,8 +1,17 @@
 package fi.tuni.space2048;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+
+import androidx.annotation.InterpolatorRes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,17 +31,59 @@ public class GameGrid {
     private int score;
     private int lastScore;
     private Random rnd = new Random();
+    private List<Animation> animations = new ArrayList<>();
+    private Animation cellAppear;
 
     public GameGrid(Context context, int gridSize) {
         this.context = context;
         this.gridSize = gridSize;
     }
 
+    public void initializeAnimations() {
+        cellAppear = AnimationUtils.loadAnimation(context, R.anim.new_cell_animation);
+        Animation animation;
+
+        for (int i = 0; i < 4; i++) {
+            for (int length = 2; length <= gridSize; length++) {
+                if (i == GameActivity.UP) {
+                    animation = new ScaleAnimation(1f, 1f, length, 0f,
+                            Animation.RELATIVE_TO_SELF, 0f,
+                            Animation.RELATIVE_TO_SELF, 0f);
+                }
+                else if (i == GameActivity.DOWN) {
+                    animation = new ScaleAnimation(1f, 1f, length, 0f,
+                            Animation.RELATIVE_TO_SELF, 0f,
+                            Animation.RELATIVE_TO_SELF, 1f);
+                }
+                else if (i == GameActivity.RIGHT) {
+                    animation = new ScaleAnimation(length, 0f, 1f, 1f,
+                            Animation.RELATIVE_TO_SELF, 1f,
+                            Animation.RELATIVE_TO_SELF, 0f);
+                }
+                else {
+                    animation = new ScaleAnimation(length, 0f, 1f, 1f,
+                            Animation.RELATIVE_TO_SELF, 0f,
+                            Animation.RELATIVE_TO_SELF, 0f);
+                }
+                animation.setDuration(100);
+                animation.setInterpolator(new AccelerateInterpolator());
+
+                animations.add(animation);
+            }
+        }
+    }
+
     public void initializeGrid() {
         gameCells = new ArrayList<>();
         for (int i = 0; i < gridSize * gridSize; i++) {
-            gameCells.add(new GameCell(0, new ImageView(context)));
+            gameCells.add(new GameCell(0, new ImageView(context), new ImageView(context)));
+            if (i < gridSize || i >= gridSize * gridSize - gridSize || i % gridSize == 0
+                    || (i + 1) % gridSize == 0) {
+                gameCells.get(i).getAnimImg().setImageResource(R.drawable.cell_portal);
+                gameCells.get(i).getAnimImg().setVisibility(View.INVISIBLE);
+            }
         }
+        initializeAnimations();
     }
     
     private void saveGridValues() {
@@ -82,6 +133,8 @@ public class GameGrid {
                 noOfEmptyCells == gridSize * gridSize - 1) {
             int rndPosition = emptyCells[rnd.nextInt(noOfEmptyCells)];
             gameCells.get(rndPosition - 1).setValue(2);
+
+            gameCells.get(rndPosition - 1).getImg().startAnimation(cellAppear);
         }
 
         searchEmptyCells();
@@ -124,6 +177,8 @@ public class GameGrid {
         int[] cellIndexes;
         int[] cellValues;
         int cellValuesIndex;
+        int maxCol;
+        boolean gridChanged;
 
         saveGridValues();
 
@@ -131,6 +186,7 @@ public class GameGrid {
             cellValues = new int[gridSize];
             cellIndexes = new int[gridSize];
             cellValuesIndex = 0;
+            maxCol = 0;
 
             for (int col = 0; col < gridSize; col++) {
 
@@ -150,6 +206,7 @@ public class GameGrid {
                 if (gameCells.get(cellIndexes[col]).getValue() != 0) {
                     cellValues[cellValuesIndex] = gameCells.get(cellIndexes[col]).getValue();
                     cellValuesIndex++;
+                    maxCol = col;
                 }
             }
             mergeCells(cellValues);
@@ -157,6 +214,19 @@ public class GameGrid {
             for (int i = 0; i < gridSize; i++) {
                 gameCells.get(cellIndexes[i]).setValue(cellValues[i]);
             }
+
+            gridChanged = false;
+            for (int i = 0; i < gridSize && !gridChanged; i++) {
+                if (gameCells.get(cellIndexes[i]).getValue() != lastGrid.get(cellIndexes[i])) {
+                    gridChanged = true;
+                }
+            }
+            if (gridChanged && maxCol > 0) {
+                int animationIdx = direction * (gridSize - 1) + maxCol - 1;
+                Log.d("e1", "INDEX:"+animationIdx);
+                gameCells.get(cellIndexes[0]).getAnimImg().startAnimation(animations.get(animationIdx));
+            }
+
         }
         placeNewNumber();
     }

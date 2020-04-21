@@ -6,9 +6,11 @@ public class GameCell {
 
     private int value;
     private ImageView img;
+    private ImageView animImg;
 
-    public GameCell(int value, ImageView img) {
+    public GameCell(int value, ImageView img, ImageView animImg) {
         this.img = img;
+        this.animImg = animImg;
         setValue(value);
     }
 
@@ -59,8 +61,13 @@ public class GameCell {
     public ImageView getImg() {
         return img;
     }
-
     public void setImg(ImageView img) {
         this.img = img;
+    }
+    public ImageView getAnimImg() {
+        return animImg;
+    }
+    public void setAnimImg(ImageView animImg) {
+        this.animImg = animImg;
     }
 }
