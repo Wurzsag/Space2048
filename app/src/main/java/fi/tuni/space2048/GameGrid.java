@@ -13,6 +13,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Game board, holds and controls the cells on the grid.
+ * <p>
+ *     Mobile Programming 1, 4A00CN43, Spring 2020
+ * </p>
+ * @author Elias Pohjalainen,
+ * Business Information Systems, Tampere University of Applied Sciences.
+ */
 public class GameGrid {
 
     private Context context;
@@ -26,15 +34,19 @@ public class GameGrid {
     private List<Integer> lastGrid = new ArrayList<>();
     private int score;
     private int lastScore;
-    private Random rnd = new Random();
     private List<Animation> animations = new ArrayList<>();
     private Animation cellAppear;
+    private Random rnd = new Random();
 
     public GameGrid(Context context, int gridSize) {
         this.context = context;
         this.gridSize = gridSize;
     }
 
+    /**
+     * Initializes animations and puts them on list.
+     * List is populated by move direction and then animation length.
+     */
     public void initializeAnimations() {
         cellAppear = AnimationUtils.loadAnimation(context, R.anim.new_cell_animation);
         Animation animation;
@@ -69,6 +81,9 @@ public class GameGrid {
         }
     }
 
+    /**
+     * Initializes the game cells on list.
+     */
     public void initializeGrid() {
         gameCells = new ArrayList<>();
         for (int i = 0; i < gridSize * gridSize; i++) {
@@ -81,7 +96,10 @@ public class GameGrid {
         }
         initializeAnimations();
     }
-    
+
+    /**
+     * Saves game boards cell values to a list.
+     */
     private void saveGridValues() {
         lastGrid.clear();
         for (GameCell cell : gameCells) {
@@ -90,6 +108,10 @@ public class GameGrid {
         lastScore = score;
     }
 
+    /**
+     * Checks the game board for any moves left.
+     * @return true if there are moves left
+     */
     private boolean checkMovesLeft() {
         boolean pairFound = false;
         int horizIdx;
@@ -110,6 +132,9 @@ public class GameGrid {
         return pairFound;
     }
 
+    /**
+     * Searches for empty game cells, counts and adds them on the array.
+     */
     private void searchEmptyCells() {
         emptyCells = new int[gridSize * gridSize];
         noOfEmptyCells = 0;
@@ -122,13 +147,22 @@ public class GameGrid {
         }
     }
 
+    /**
+     * Places a new number to the game board. 90% chance for "2", 10% for "4".
+     * Checks if the game is over.
+     */
     public void placeNewNumber() {
         searchEmptyCells();
 
         if (! Arrays.equals(lastEmptyCells, emptyCells) ||
                 noOfEmptyCells == gridSize * gridSize - 1) {
             int rndPosition = emptyCells[rnd.nextInt(noOfEmptyCells)];
-            gameCells.get(rndPosition - 1).setValue(2);
+            if (rnd.nextInt(10) == 4) {
+                gameCells.get(rndPosition - 1).setValue(4);
+            }
+            else {
+                gameCells.get(rndPosition - 1).setValue(2);
+            }
 
             gameCells.get(rndPosition - 1).getImg().startAnimation(cellAppear);
         }
@@ -142,6 +176,10 @@ public class GameGrid {
         lastEmptyCells = emptyCells;
     }
 
+    /**
+     * Merges game cells if pair is found. Checks if the winning value is reached.
+     * @param cellValues array of values of game cells in one column or row.
+     */
     public void mergeCells(int[] cellValues) {
         int[] mergedCells = new int[gridSize];
         int mergedCellsIndex = 0;
@@ -157,9 +195,11 @@ public class GameGrid {
             }
             else if (cellValues[i] == cellValues[i+1]) {
                 mergedCells[mergedCellsIndex] = 2 * cellValues[i];
+
                 if (mergedCells[mergedCellsIndex] == 2048) {
                     win = true;
                 }
+
                 mergedCellsIndex++;
                 i++;
                 score += 2 * cellValues[i];
@@ -172,6 +212,11 @@ public class GameGrid {
         System.arraycopy(mergedCells, 0, cellValues, 0, cellValues.length);
     }
 
+    /**
+     * Move game cells, order of the cells depends on which side the player
+     * is moving cells.
+     * @param direction to which direction player moves cells
+     */
     public void moveCells(int direction) {
         int[] cellIndexes;
         int[] cellValues;
@@ -229,6 +274,9 @@ public class GameGrid {
         placeNewNumber();
     }
 
+    /**
+     * Undo move. Takes the game board one step back.
+     */
     public void undo() {
         for (int i = 0; i < gameCells.size(); i++) {
             gameCells.get(i).setValue(lastGrid.get(i));

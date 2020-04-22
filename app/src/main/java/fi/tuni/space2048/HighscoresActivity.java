@@ -6,6 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
 
+/**
+ * High scores, keeps track of each game board top 3 scores.
+ *
+ * <p>
+ *     Mobile Programming 1, 4A00CN43, Spring 2020
+ * </p>
+ * @author Elias Pohjalainen,
+ * Business Information Systems, Tampere University of Applied Sciences.
+ */
 public class HighscoresActivity extends AppCompatActivity {
 
     private TextView scores3x3TV;
@@ -22,12 +31,21 @@ public class HighscoresActivity extends AppCompatActivity {
         readScores();
     }
 
+    /**
+     * Modifies string to clean version.
+     * @param highscoresString string unmodified
+     * @return string without array marking
+     */
     private String cleanString(String highscoresString) {
         highscoresString = highscoresString.replace("[", "").
                 replace("]", "").replace(", ", "\n");
         return highscoresString;
     }
 
+    /**
+     * Gets the top scores from Shared Preferences,
+     * and sets them in view.
+     */
     private void readScores() {
         SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
         String highscoresString3 = sharedPref.getString("highscores3", "0, 0, 0");

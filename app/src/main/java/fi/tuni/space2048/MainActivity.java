@@ -8,6 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Main menu for the game, game and highscore are launched from here.
+ * <p>
+ *     Mobile Programming 1, 4A00CN43, Spring 2020
+ * </p>
+ * @author Elias Pohjalainen,
+ * Business Information Systems, Tampere University of Applied Sciences.
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final String PREFS_KEY = "MyPrefs";
@@ -35,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         saveOptions();
     }
 
+    /**
+     * Starts the game.
+     * @param button onClick
+     */
     public void startGame(View button) {
         Intent i = new Intent(this, GameActivity.class);
         i.putExtra("gridSize", gridSize);
@@ -42,11 +54,19 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * Launches the highscore screen.
+     * @param button onClick
+     */
     public void showScore(View button) {
         Intent i = new Intent(this, HighscoresActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Cycles trough game board sizes.
+     * @param button onClick
+     */
     public void changeGridSize(View button) {
         gridSize++;
         if (gridSize > 5) {
@@ -64,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Mutes the music.
+     * @param button onClick
+     */
     public void toggleMute(View button) {
         if (!muted) {
             button.setSelected(true);
@@ -75,6 +99,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves the mute user preference
+     */
     public void saveOptions() {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("muted", muted);

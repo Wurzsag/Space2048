@@ -21,6 +21,14 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
 
+/**
+ * Game activity, creates the game board and listens user controls.
+ * <p>
+ *     Mobile Programming 1, 4A00CN43, Spring 2020
+ * </p>
+ * @author Elias Pohjalainen,
+ * Business Information Systems, Tampere University of Applied Sciences.
+ */
 public class GameActivity extends AppCompatActivity {
 
     public static final int UP = 0;
@@ -119,10 +127,17 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Resets the game.
+     * @param button onClick
+     */
     public void resetGame(View button) {
         recreate();
     }
 
+    /**
+     * Initializes the game board. Sets imageViews to each game cell.
+     */
     private void initializeGrid() {
         gameGrid.initializeGrid();
         ImageView cellImageView;
@@ -158,6 +173,9 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initializes the game score formatter.
+     */
     private void initializeFormatter() {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setGroupingSeparator(' ');
@@ -165,12 +183,21 @@ public class GameActivity extends AppCompatActivity {
         formatter.setMinimumIntegerDigits(9);
     }
 
+    /**
+     * Undo button. Calls undo move.
+     * @param button onClick
+     */
     public void undoMove(View button) {
         gameGrid.undo();
         scoreTV.setText(formatter.format(gameGrid.getScore()));
         undoBtn.setEnabled(false);
     }
 
+    /**
+     * Sorts and cleans the highscore string from Shared Preferences.
+     * @param highscoresString string with unmodified highscores.
+     * @return string with sorted and cleaned highscore.
+     */
     private String sortScores(String highscoresString) {
 
         highscoresString = highscoresString.replace("[", "")
@@ -193,6 +220,9 @@ public class GameActivity extends AppCompatActivity {
         return Arrays.toString(topScores);
     }
 
+    /**
+     * Saves score in Shared Preferences.
+     */
     private void saveScore() {
         SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
         String highscoreKey = "highscores" + gridSize;
@@ -206,6 +236,9 @@ public class GameActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     * Ends the game by removing the touch listener.
+     */
     @SuppressLint("ClickableViewAccessibility")
     private void endGame() {
         gameScreen.setOnTouchListener(null);
