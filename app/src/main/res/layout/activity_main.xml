@@ -27,6 +27,7 @@
         android:id="@+id/gridSize"
         android:layout_width="110dp"
         android:layout_height="110dp"
+        android:backgroundTint="#00CDD4"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
         android:onClick="changeGridSize"
@@ -72,6 +73,7 @@
         android:scaleType="fitCenter"
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/mute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

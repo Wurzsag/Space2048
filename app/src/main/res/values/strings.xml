@@ -3,8 +3,12 @@
     <string name="tittle">Space 2048</string>
     <string name="start_game">Play</string>
     <string name="highscores">Highscores</string>
+    <string name="mute">Mute</string>
     <string name="score">Score</string>
     <string name="game_over">Game over</string>
+    <string name="win_message">You win!</string>
+    <string name="reset">Reset</string>
+    <string name="undo">Undo</string>
     <string name="grid_2x2">2x2</string>
     <string name="grid_3x3">3x3</string>
     <string name="grid_4x4">4x4</string>

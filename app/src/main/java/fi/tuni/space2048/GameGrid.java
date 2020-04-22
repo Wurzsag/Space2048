@@ -1,17 +1,12 @@
 package fi.tuni.space2048;
 
 import android.content.Context;
-import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-
-import androidx.annotation.InterpolatorRes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +17,7 @@ public class GameGrid {
 
     private Context context;
     private boolean gameOver;
+    private boolean win;
     private int gridSize;
     private int noOfEmptyCells;
     private int[] emptyCells;
@@ -161,6 +157,9 @@ public class GameGrid {
             }
             else if (cellValues[i] == cellValues[i+1]) {
                 mergedCells[mergedCellsIndex] = 2 * cellValues[i];
+                if (mergedCells[mergedCellsIndex] == 2048) {
+                    win = true;
+                }
                 mergedCellsIndex++;
                 i++;
                 score += 2 * cellValues[i];
@@ -223,7 +222,6 @@ public class GameGrid {
             }
             if (gridChanged && maxCol > 0) {
                 int animationIdx = direction * (gridSize - 1) + maxCol - 1;
-                Log.d("e1", "INDEX:"+animationIdx);
                 gameCells.get(cellIndexes[0]).getAnimImg().startAnimation(animations.get(animationIdx));
             }
 
@@ -255,5 +253,11 @@ public class GameGrid {
     }
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+    public boolean isWin() {
+        return win;
+    }
+    public void setWin(boolean win) {
+        this.win = win;
     }
 }

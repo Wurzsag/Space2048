@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,7 +11,6 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -39,6 +36,7 @@ public class GameActivity extends AppCompatActivity {
     private ImageButton undoBtn;
     private TextView scoreTV;
     private TextView gameOverTV;
+    private TextView winMsgTV;
     private boolean muted;
     private MediaPlayer mediaPlayer;
     private DecimalFormat formatter;
@@ -59,6 +57,7 @@ public class GameActivity extends AppCompatActivity {
         undoBtn = findViewById(R.id.undoBtn);
         scoreTV = findViewById(R.id.score);
         gameOverTV = findViewById(R.id.gameOver);
+        winMsgTV = findViewById(R.id.winMsg);
         gameGrid = new GameGrid(this, gridSize);
 
         gameScreen.setOnTouchListener(new MyOnSwipeListener(GameActivity.this) {
@@ -84,6 +83,9 @@ public class GameActivity extends AppCompatActivity {
                     saveScore();
                     endGame();
                 }
+                if (gameGrid.isWin()) {
+                    winMsgTV.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -93,6 +95,7 @@ public class GameActivity extends AppCompatActivity {
         gameGrid.placeNewNumber();
         gameGrid.placeNewNumber();
         gameOverTV.setVisibility(View.GONE);
+        winMsgTV.setVisibility(View.GONE);
         scoreTV.setText(formatter.format(gameGrid.getScore()));
     }
 
@@ -192,16 +195,18 @@ public class GameActivity extends AppCompatActivity {
 
     private void saveScore() {
         SharedPreferences sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
-        String highscoresString = sharedPref.getString("highscores", "0, 0, 0");
+        String highscoreKey = "highscores" + gridSize;
+        String highscoresString = sharedPref.getString(highscoreKey, "0, 0, 0");
 
         highscoresString = sortScores(highscoresString);
 
         SharedPreferences.Editor editor = sharedPref.edit();
 
-        editor.putString("highscores", highscoresString);
+        editor.putString(highscoreKey, highscoresString);
         editor.apply();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void endGame() {
         gameScreen.setOnTouchListener(null);
     }

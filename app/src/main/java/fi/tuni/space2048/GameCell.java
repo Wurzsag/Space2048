@@ -53,6 +53,18 @@ public class GameCell {
         else if (value == 2048) {
             img.setImageResource(R.drawable.cell_2048);
         }
+        else if (value == 4096) {
+            img.setImageResource(R.drawable.cell_4096);
+        }
+        else if (value == 8192) {
+            img.setImageResource(R.drawable.cell_8192);
+        }
+        else if (value == 16384) {
+            img.setImageResource(R.drawable.cell_16384);
+        }
+        else if (value == 32768) {
+            img.setImageResource(R.drawable.cell_32768);
+        }
         else {
             img.setImageResource(R.drawable.cell_0);
         }

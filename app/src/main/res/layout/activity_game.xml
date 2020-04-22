@@ -15,35 +15,43 @@
         style="@style/scoreText"
         android:layout_width="200dp"
         android:layout_height="76dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/ui_points"
-        android:text="000 000 000"
-        app:layout_constraintHorizontal_bias="0.36"
         app:layout_constraintBottom_toTopOf="@+id/gameGrid"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/resetBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/resetBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/reset"
         android:onClick="resetGame"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
         android:src="@android:drawable/stat_notify_sync"
+        android:backgroundTint="#CD21A595"
         app:layout_constraintBottom_toBottomOf="@+id/score"
+        app:layout_constraintEnd_toStartOf="@+id/undoBtn"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/score"
         app:layout_constraintTop_toTopOf="@+id/score"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.64" />
 
     <ImageButton
         android:id="@+id/undoBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/undo"
         android:onClick="undoMove"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:src="@android:drawable/ic_menu_revert"
+        android:src="@drawable/undo_button"
+        android:backgroundTint="#CD21A595"
         app:layout_constraintBottom_toBottomOf="@+id/score"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/resetBtn"
         app:layout_constraintTop_toTopOf="@+id/score"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintVertical_bias="0.64" />
 
     <TableLayout
         android:id="@+id/gameGrid"
@@ -56,39 +64,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.46">
-    </TableLayout>
+        app:layout_constraintVertical_bias="0.46" />
 
     <TableLayout
         android:id="@+id/animationGrid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
         android:gravity="center"
         android:shrinkColumns="*"
-        android:clipChildren="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.46">
-    </TableLayout>
+        app:layout_constraintVertical_bias="0.46" />
 
     <TextView
         android:id="@+id/gameOver"
+        style="@style/gameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/share_tech_mono"
         android:text="@string/game_over"
-        android:textAllCaps="true"
-        android:textColor="#FFFFFF"
         android:textSize="44sp"
-        android:shadowColor="#000000"
-        android:shadowRadius="4"
-        android:shadowDx="0.2"
-        android:shadowDy="0.2"
         app:layout_constraintBottom_toBottomOf="@+id/gameGrid"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/gameGrid" />
+
+    <TextView
+        android:id="@+id/winMsg"
+        style="@style/gameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/win_message"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gameGrid"
+        app:layout_constraintVertical_bias="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
