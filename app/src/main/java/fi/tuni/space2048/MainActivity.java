@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Saves the mute user preference
+     * Saves the mute user preference.
      */
     public void saveOptions() {
         SharedPreferences.Editor editor = sharedPref.edit();

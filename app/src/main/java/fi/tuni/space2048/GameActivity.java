@@ -5,7 +5,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -37,17 +39,26 @@ public class GameActivity extends AppCompatActivity {
     public static final int LEFT = 3;
 
     private int gridSize;
+    private GameGrid gameGrid;
     private ConstraintLayout gameScreen;
     private TableLayout gameField;
     private TableLayout animationGrid;
-    private GameGrid gameGrid;
     private ImageButton undoBtn;
     private TextView scoreTV;
     private TextView gameOverTV;
     private TextView winMsgTV;
     private boolean muted;
-    private MediaPlayer mediaPlayer;
     private DecimalFormat formatter;
+
+    private MediaPlayer mediaPlayer;
+    private SoundPool soundPool;
+    private int moveSoundID;
+    private int invalidMoveSoundID;
+    private int resetSound;
+    private int undoSound;
+    private int gameOverSound;
+    private int winSound;
+    boolean soundLoaded = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -82,29 +93,33 @@ public class GameActivity extends AppCompatActivity {
                 gameGrid.moveCells(DOWN);
             }
             public void onSwipe() {
-                scoreTV.setText(formatter.format(gameGrid.getScore()));
-                undoBtn.setEnabled(true);
-
-                if (gameGrid.isGameOver()) {
-                    gameOverTV.setVisibility(View.VISIBLE);
-                    undoBtn.setEnabled(false);
-                    saveScore();
-                    endGame();
-                }
-                if (gameGrid.isWin()) {
-                    winMsgTV.setVisibility(View.VISIBLE);
-                }
+                updateView();
             }
         });
 
+        if (!muted) {
+            soundPool = new SoundPool.Builder().setMaxStreams(3).build();
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    soundLoaded = true;
+                }
+            });
+            moveSoundID = soundPool.load(this, R.raw.move_sound, 0);
+            invalidMoveSoundID = soundPool.load(this, R.raw.invalid_move_ound, 0);
+            resetSound = soundPool.load(this, R.raw.reset_sound, 0);
+            undoSound = soundPool.load(this, R.raw.undo_sound, 0);
+            gameOverSound = soundPool.load(this, R.raw.game_over_sound, 0);
+            winSound = soundPool.load(this, R.raw.win_sound, 0);
+        }
         initializeGrid();
         initializeFormatter();
+        scoreTV.setText(formatter.format(gameGrid.getScore()));
+        gameOverTV.setVisibility(View.GONE);
+        winMsgTV.setVisibility(View.GONE);
         undoBtn.setEnabled(false);
         gameGrid.placeNewNumber();
         gameGrid.placeNewNumber();
-        gameOverTV.setVisibility(View.GONE);
-        winMsgTV.setVisibility(View.GONE);
-        scoreTV.setText(formatter.format(gameGrid.getScore()));
     }
 
     @Override
@@ -125,14 +140,6 @@ public class GameActivity extends AppCompatActivity {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-    }
-
-    /**
-     * Resets the game.
-     * @param button onClick
-     */
-    public void resetGame(View button) {
-        recreate();
     }
 
     /**
@@ -184,6 +191,35 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
+     * Updates the view. Sets score and undo button, checks if
+     * the game is over and won.
+     */
+    public void updateView() {
+        scoreTV.setText(formatter.format(gameGrid.getScore()));
+
+        if (gameGrid.isGridChange()) {
+            undoBtn.setEnabled(true);
+            playSound(moveSoundID);
+            gameGrid.setGridChange(false);
+        }
+        else {
+            playSound(invalidMoveSoundID);
+        }
+
+        if (gameGrid.isGameOver()) {
+            gameOverTV.setVisibility(View.VISIBLE);
+            undoBtn.setEnabled(false);
+            playSound(gameOverSound);
+            saveScore();
+            endGame();
+        }
+        if (gameGrid.isWin()) {
+            winMsgTV.setVisibility(View.VISIBLE);
+            playSound(winSound);
+        }
+    }
+
+    /**
      * Undo button. Calls undo move.
      * @param button onClick
      */
@@ -191,6 +227,16 @@ public class GameActivity extends AppCompatActivity {
         gameGrid.undo();
         scoreTV.setText(formatter.format(gameGrid.getScore()));
         undoBtn.setEnabled(false);
+        playSound(undoSound);
+    }
+
+    /**
+     * Resets the game.
+     * @param button onClick
+     */
+    public void resetGame(View button) {
+        playSound(resetSound);
+        recreate();
     }
 
     /**
@@ -234,6 +280,23 @@ public class GameActivity extends AppCompatActivity {
 
         editor.putString(highscoreKey, highscoresString);
         editor.apply();
+    }
+
+    /**
+     * Plays the sound.
+     * @param soundID ID of the sound
+     */
+    public void playSound(int soundID) {
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        float actualVolume = (float) audioManager
+                .getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        float volume = actualVolume / maxVolume;
+
+        if (soundLoaded) {
+            soundPool.play(soundID, volume, volume, 1, 0, 1f);
+        }
     }
 
     /**

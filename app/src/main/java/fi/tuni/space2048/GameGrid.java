@@ -26,6 +26,7 @@ public class GameGrid {
     private Context context;
     private boolean gameOver;
     private boolean win;
+    private boolean gridChange;
     private int gridSize;
     private int noOfEmptyCells;
     private int[] emptyCells;
@@ -108,6 +109,10 @@ public class GameGrid {
         lastScore = score;
     }
 
+    private void checkChange() {
+
+    }
+
     /**
      * Checks the game board for any moves left.
      * @return true if there are moves left
@@ -180,7 +185,7 @@ public class GameGrid {
      * Merges game cells if pair is found. Checks if the winning value is reached.
      * @param cellValues array of values of game cells in one column or row.
      */
-    public void mergeCells(int[] cellValues) {
+    private void mergeCells(int[] cellValues) {
         int[] mergedCells = new int[gridSize];
         int mergedCellsIndex = 0;
         boolean zeroValue = false;
@@ -222,7 +227,7 @@ public class GameGrid {
         int[] cellValues;
         int cellValuesIndex;
         int maxCol;
-        boolean gridChanged;
+        boolean colChange;
 
         saveGridValues();
 
@@ -259,13 +264,14 @@ public class GameGrid {
                 gameCells.get(cellIndexes[i]).setValue(cellValues[i]);
             }
 
-            gridChanged = false;
-            for (int i = 0; i < gridSize && !gridChanged; i++) {
+            colChange = false;
+            for (int i = 0; i < gridSize && !colChange; i++) {
                 if (gameCells.get(cellIndexes[i]).getValue() != lastGrid.get(cellIndexes[i])) {
-                    gridChanged = true;
+                    colChange = true;
+                    gridChange = true;
                 }
             }
-            if (gridChanged && maxCol > 0) {
+            if (colChange && maxCol > 0) {
                 int animationIdx = direction * (gridSize - 1) + maxCol - 1;
                 gameCells.get(cellIndexes[0]).getAnimImg().startAnimation(animations.get(animationIdx));
             }
@@ -307,5 +313,11 @@ public class GameGrid {
     }
     public void setWin(boolean win) {
         this.win = win;
+    }
+    public boolean isGridChange() {
+        return gridChange;
+    }
+    public void setGridChange(boolean gridChange) {
+        this.gridChange = gridChange;
     }
 }
