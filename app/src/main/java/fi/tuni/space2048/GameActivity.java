@@ -47,7 +47,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView scoreTV;
     private TextView gameOverTV;
     private TextView winMsgTV;
-    private boolean muted;
+    private boolean musicMuted;
+    private boolean soundMuted;
     private DecimalFormat formatter;
 
     private MediaPlayer mediaPlayer;
@@ -68,7 +69,8 @@ public class GameActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             gridSize = extras.getInt("gridSize");
-            muted = extras.getBoolean("muted");
+            musicMuted = extras.getBoolean("musicMuted");
+            soundMuted = extras.getBoolean("soundMuted");
         }
         gameScreen = findViewById(R.id.gameScreen);
         gameField = findViewById(R.id.gameGrid);
@@ -97,7 +99,7 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        if (!muted) {
+        if (!soundMuted) {
             soundPool = new SoundPool.Builder().setMaxStreams(3).build();
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
@@ -125,7 +127,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!muted) {
+        if (!musicMuted) {
             mediaPlayer = MediaPlayer.create(this, R.raw.space_music);
             mediaPlayer.start();
             mediaPlayer.setLooping(true);
@@ -287,14 +289,14 @@ public class GameActivity extends AppCompatActivity {
      * @param soundID ID of the sound
      */
     public void playSound(int soundID) {
-        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        float actualVolume = (float) audioManager
-                .getStreamVolume(AudioManager.STREAM_MUSIC);
-        float maxVolume = (float) audioManager
-                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        float volume = actualVolume / maxVolume;
-
         if (soundLoaded) {
+            AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+            float actualVolume = (float) audioManager
+                    .getStreamVolume(AudioManager.STREAM_MUSIC);
+            float maxVolume = (float) audioManager
+                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            float volume = actualVolume / maxVolume;
+
             soundPool.play(soundID, volume, volume, 1, 0, 1f);
         }
     }

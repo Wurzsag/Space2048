@@ -23,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     int gridSize = 4;
     private Button gridSizeBtn;
     private SharedPreferences sharedPref;
-    private boolean muted;
+    private boolean musicMuted;
+    private boolean soundMuted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +32,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         gridSizeBtn = findViewById(R.id.gridSize);
         sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
-        muted = sharedPref.getBoolean("muted", false);
-        if (muted) {
-            findViewById(R.id.muteButton).setSelected(true);
+        musicMuted = sharedPref.getBoolean("musicMuted", false);
+        soundMuted = sharedPref.getBoolean("musicMuted", false);
+        if (musicMuted) {
+            findViewById(R.id.muteMusicButton).setSelected(true);
+        }
+        if (soundMuted) {
+            findViewById(R.id.muteSoundButton).setSelected(true);
         }
     }
 
@@ -50,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
     public void startGame(View button) {
         Intent i = new Intent(this, GameActivity.class);
         i.putExtra("gridSize", gridSize);
-        i.putExtra("muted", muted);
+        i.putExtra("musicMuted", musicMuted);
+        i.putExtra("soundMuted", soundMuted);
         startActivity(i);
     }
 
@@ -88,14 +94,29 @@ public class MainActivity extends AppCompatActivity {
      * Mutes the music.
      * @param button onClick
      */
-    public void toggleMute(View button) {
-        if (!muted) {
+    public void toggleMuteMusic(View button) {
+        if (!musicMuted) {
             button.setSelected(true);
-            muted = true;
+            musicMuted = true;
         }
         else {
             button.setSelected(false);
-            muted = false;
+            musicMuted = false;
+        }
+    }
+
+    /**
+     * Mutes sound effects.
+     * @param button onClick
+     */
+    public void toggleMuteSound(View button) {
+        if (!soundMuted) {
+            button.setSelected(true);
+            soundMuted = true;
+        }
+        else {
+            button.setSelected(false);
+            soundMuted = false;
         }
     }
 
@@ -104,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void saveOptions() {
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("muted", muted);
+        editor.putBoolean("musicMuted", musicMuted);
+        editor.putBoolean("soundMuted", soundMuted);
         editor.apply();
     }
 }

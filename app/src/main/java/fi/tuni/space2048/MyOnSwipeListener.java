@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 
 /**
- * Swipe Listener.
+ * Swipe Listener. Recognizes swipe on 4 different directions.
  * <p>
  *     Mobile Programming 1, 4A00CN43, Spring 2020
  * </p>

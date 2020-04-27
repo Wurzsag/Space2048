@@ -7,10 +7,11 @@
     android:background="@drawable/menu_background"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tittleTV"
+    <ImageView
+        android:id="@+id/tittle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="130dp"
+        android:src="@drawable/menu_title"
         android:fontFamily="sans-serif-smallcaps"
         android:text="@string/tittle"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -27,7 +28,7 @@
         android:id="@+id/gridSize"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:backgroundTint="#00CDD4"
+        android:backgroundTint="#d7ff05"
         android:fontFamily="@font/share_tech_mono"
         android:gravity="center"
         android:onClick="changeGridSize"
@@ -64,16 +65,31 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/muteButton"
-        android:onClick="toggleMute"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/mute_button"
+        android:id="@+id/muteMusicButton"
+        android:onClick="toggleMuteMusic"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:src="@drawable/mute_music_button"
         android:background="@drawable/circle_button"
         android:scaleType="fitCenter"
-        android:layout_margin="20dp"
+        android:layout_marginVertical="20dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/mute" />
+
+    <ImageButton
+        android:id="@+id/muteSoundButton"
+        android:onClick="toggleMuteSound"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:src="@drawable/mute_sound_button"
+        android:background="@drawable/circle_button"
+        android:scaleType="fitCenter"
+        android:layout_marginVertical="20dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/muteMusicButton"
         android:contentDescription="@string/mute" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

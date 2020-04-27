@@ -96,6 +96,7 @@ public class GameGrid {
             }
         }
         initializeAnimations();
+        //gridChange = true;
     }
 
     /**
@@ -107,10 +108,6 @@ public class GameGrid {
             lastGrid.add(cell.getValue());
         }
         lastScore = score;
-    }
-
-    private void checkChange() {
-
     }
 
     /**

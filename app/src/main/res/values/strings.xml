@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Space2048</string>
+    <string name="app_name">Space 2048</string>
     <string name="tittle">Space 2048</string>
     <string name="start_game">Play</string>
     <string name="highscores">Highscores</string>
