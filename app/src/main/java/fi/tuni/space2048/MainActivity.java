@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         gridSizeBtn = findViewById(R.id.gridSize);
         sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
         musicMuted = sharedPref.getBoolean("musicMuted", false);
-        soundMuted = sharedPref.getBoolean("musicMuted", false);
+        soundMuted = sharedPref.getBoolean("soundMuted", false);
         if (musicMuted) {
             findViewById(R.id.muteMusicButton).setSelected(true);
         }

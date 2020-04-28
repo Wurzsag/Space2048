@@ -199,10 +199,9 @@ public class GameActivity extends AppCompatActivity {
     public void updateView() {
         scoreTV.setText(formatter.format(gameGrid.getScore()));
 
-        if (gameGrid.isGridChange()) {
+        if (gameGrid.isGridChanged()) {
             undoBtn.setEnabled(true);
             playSound(moveSoundID);
-            gameGrid.setGridChange(false);
         }
         else {
             playSound(invalidMoveSoundID);
@@ -285,7 +284,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * Plays the sound.
+     * Plays the sound effect.
      * @param soundID ID of the sound
      */
     public void playSound(int soundID) {

@@ -26,7 +26,7 @@ public class GameGrid {
     private Context context;
     private boolean gameOver;
     private boolean win;
-    private boolean gridChange;
+    private boolean gridChanged;
     private int gridSize;
     private int noOfEmptyCells;
     private int[] emptyCells;
@@ -96,7 +96,6 @@ public class GameGrid {
             }
         }
         initializeAnimations();
-        //gridChange = true;
     }
 
     /**
@@ -166,6 +165,7 @@ public class GameGrid {
                 gameCells.get(rndPosition - 1).setValue(2);
             }
 
+            gridChanged = true;
             gameCells.get(rndPosition - 1).getImg().startAnimation(cellAppear);
         }
 
@@ -225,8 +225,11 @@ public class GameGrid {
         int cellValuesIndex;
         int maxCol;
         boolean colChange;
+        List<Integer> tempLastGrid = new ArrayList<>(lastGrid);
+        int tempLastScore = lastScore;
 
         saveGridValues();
+        gridChanged = false;
 
         for (int row = 0; row < gridSize; row++) {
             cellValues = new int[gridSize];
@@ -265,7 +268,6 @@ public class GameGrid {
             for (int i = 0; i < gridSize && !colChange; i++) {
                 if (gameCells.get(cellIndexes[i]).getValue() != lastGrid.get(cellIndexes[i])) {
                     colChange = true;
-                    gridChange = true;
                 }
             }
             if (colChange && maxCol > 0) {
@@ -275,6 +277,11 @@ public class GameGrid {
 
         }
         placeNewNumber();
+
+        if (!gridChanged) {
+            lastGrid = tempLastGrid;
+            lastScore = tempLastScore;
+        }
     }
 
     /**
@@ -311,10 +318,10 @@ public class GameGrid {
     public void setWin(boolean win) {
         this.win = win;
     }
-    public boolean isGridChange() {
-        return gridChange;
+    public boolean isGridChanged() {
+        return gridChanged;
     }
-    public void setGridChange(boolean gridChange) {
-        this.gridChange = gridChange;
+    public void setGridChanged(boolean gridChanged) {
+        this.gridChanged = gridChanged;
     }
 }
