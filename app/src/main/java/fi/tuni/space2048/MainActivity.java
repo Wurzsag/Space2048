@@ -71,13 +71,22 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Cycles trough game board sizes.
-     * @param button onClick
+     * @param increase true to increase size, false to decrease
      */
-    public void changeGridSize(View button) {
-        gridSize++;
+    public void changeGridSize(Boolean increase) {
+        if (increase) {
+            gridSize++;
+        }
+        else {
+            gridSize--;
+        }
         if (gridSize > 5) {
             gridSize = 2;
         }
+        else if (gridSize < 2) {
+            gridSize = 5;
+        }
+
         switch (gridSize) {
             case 2: gridSizeBtn.setText(R.string.grid_2x2);
                 break;
@@ -88,6 +97,22 @@ public class MainActivity extends AppCompatActivity {
             case 5: gridSizeBtn.setText(R.string.grid_5x5);
                 break;
         }
+    }
+
+    /**
+     * Increase the game board size.
+     * @param button onClick
+     */
+    public void increaseGridSize(View button) {
+        changeGridSize(true);
+    }
+
+    /**
+     * Decrease the game board size.
+     * @param button onClick
+     */
+    public void decreaseGridSize(View button) {
+        changeGridSize(false);
     }
 
     /**
