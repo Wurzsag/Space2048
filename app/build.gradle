@@ -4,7 +4,7 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "fi.tuni.space2048"
-        minSdkVersion 24
+        minSdkVersion 28
         targetSdkVersion 33
         versionCode 3
         versionName "1.1"

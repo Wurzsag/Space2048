@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * Main menu for the game, game and highscore are launched from here.
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     int gridSize = 4;
     private Button gridSizeBtn;
+    private TextView sizeInfoTV;
     private SharedPreferences sharedPref;
     private boolean musicMuted;
     private boolean soundMuted;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gridSizeBtn = findViewById(R.id.gridSize);
+        sizeInfoTV = findViewById(R.id.gridSizeInfo);
         sharedPref = getSharedPreferences(MainActivity.PREFS_KEY, MODE_PRIVATE);
         musicMuted = sharedPref.getBoolean("musicMuted", false);
         soundMuted = sharedPref.getBoolean("soundMuted", false);
@@ -88,13 +91,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         switch (gridSize) {
-            case 2: gridSizeBtn.setText(R.string.grid_2x2);
+            case 2:
+                gridSizeBtn.setText(R.string.grid_2x2);
+                sizeInfoTV.setVisibility(View.INVISIBLE);
                 break;
-            case 3: gridSizeBtn.setText(R.string.grid_3x3);
+            case 3:
+                gridSizeBtn.setText(R.string.grid_3x3);
+                sizeInfoTV.setVisibility(View.INVISIBLE);
                 break;
-            case 4: gridSizeBtn.setText(R.string.grid_4x4);
+            case 4:
+                gridSizeBtn.setText(R.string.grid_4x4);
+                sizeInfoTV.setVisibility(View.VISIBLE);
                 break;
-            case 5: gridSizeBtn.setText(R.string.grid_5x5);
+            case 5:
+                gridSizeBtn.setText(R.string.grid_5x5);
+                sizeInfoTV.setVisibility(View.INVISIBLE);
                 break;
         }
     }
