@@ -47,6 +47,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView scoreTV;
     private TextView gameOverTV;
     private TextView winMsgTV;
+    private boolean gameWon;
     private boolean musicMuted;
     private boolean soundMuted;
     private DecimalFormat formatter;
@@ -214,9 +215,10 @@ public class GameActivity extends AppCompatActivity {
             saveScore();
             endGame();
         }
-        if (gameGrid.isWin()) {
+        if (!gameWon && gameGrid.isWin()) {
             winMsgTV.setVisibility(View.VISIBLE);
             playSound(winSound);
+            gameWon = true;
         }
     }
 

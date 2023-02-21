@@ -21,15 +21,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/highscores"
-            android:textSize="30sp"
+            android:textSize="34sp"
             android:layout_marginBottom="20dp"/>
 
         <TextView
             style="@style/gameText"
+            android:textColor="@color/neonGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/grid_3x3"
-            android:textSize="30sp" />
+            android:textSize="34sp" />
 
         <TextView
             android:id="@+id/highscores3x3"
@@ -40,10 +41,11 @@
 
         <TextView
             style="@style/gameText"
+            android:textColor="@color/neonGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/grid_4x4"
-            android:textSize="30sp"
+            android:textSize="34sp"
             android:layout_marginTop="20dp"/>
 
         <TextView
@@ -54,10 +56,11 @@
 
         <TextView
             style="@style/gameText"
+            android:textColor="@color/neonGreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/grid_5x5"
-            android:textSize="30sp"
+            android:textSize="34sp"
             android:layout_marginTop="20dp"/>
 
         <TextView
